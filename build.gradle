@@ -1,5 +1,6 @@
 buildscript {
     ext.kotlin_version = '1.2.30-eap-47'
+    ext.ktor_version = '0.9.1'
 
     repositories {
         maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
@@ -15,15 +16,26 @@ version '1.0-SNAPSHOT'
 
 apply plugin: 'kotlin'
 
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
 repositories {
     maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+    maven { url "https://dl.bintray.com/kotlin/kotlinx" }
+    maven { url "https://dl.bintray.com/kotlin/ktor" }
     mavenCentral()
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "com.rabbitmq:amqp-client:5.1.2"
-    compile "org.slf4j:slf4j-simple:1.7.9"
+    compile "io.ktor:ktor-server-netty:$ktor_version"
+    compile "io.ktor:ktor-websockets:$ktor_version"
+    compile "io.ktor:ktor-gson:$ktor_version"
+    compile "ch.qos.logback:logback-classic:1.2.1"
 }
 
 compileKotlin {
