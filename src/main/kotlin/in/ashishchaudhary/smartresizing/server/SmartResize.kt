@@ -5,10 +5,7 @@ import io.ktor.application.Application
 import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
 import io.ktor.application.install
-import io.ktor.content.PartData
-import io.ktor.content.defaultResource
-import io.ktor.content.resources
-import io.ktor.content.static
+import io.ktor.content.*
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
@@ -97,9 +94,11 @@ fun Application.main() {
             }
             try {
                 val baseDir = File(System.getProperty("java.io.tmpdir"))
-                val childDir = File(baseDir, mpr.id)
-                if (!childDir.exists()) childDir.mkdir()
-                val filePath = File(childDir, mpr.fileName).toPath()
+                val seamDir = File(baseDir, "seam")
+                if (!seamDir.exists()) seamDir.mkdir()
+                val blobDir = File(seamDir, mpr.id)
+                if (!blobDir.exists()) blobDir.mkdir()
+                val filePath = File(blobDir, mpr.fileName).toPath()
                 Files.copy(mpr.inStream, filePath, StandardCopyOption.REPLACE_EXISTING)
                 call.respondText { "Success" }
             } catch (e: Exception) {
@@ -117,6 +116,11 @@ fun Application.main() {
         static {
             defaultResource("index.html", "web")
             resources("web")
+        }
+
+        static("file") {
+            staticRootFolder = File(System.getProperty("java.io.tmpdir"))
+            files(File(staticRootFolder, "seam"))
         }
     }
 }
