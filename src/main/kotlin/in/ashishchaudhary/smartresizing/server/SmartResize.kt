@@ -101,11 +101,12 @@ fun Application.main() {
                 if (!childDir.exists()) childDir.mkdir()
                 val filePath = File(childDir, mpr.fileName).toPath()
                 Files.copy(mpr.inStream, filePath, StandardCopyOption.REPLACE_EXISTING)
-                (mpr.inStream as InputStream).close()
-            } catch (e: SecurityException) {
+                call.respondText { "Success" }
+            } catch (e: Exception) {
                 println(e.message)
+                call.respond(HttpStatusCode.InternalServerError, "Something went wrong")
             } finally {
-                call.respondText { "Something went wrong" }
+                (mpr.inStream as InputStream).close()
             }
         }
 

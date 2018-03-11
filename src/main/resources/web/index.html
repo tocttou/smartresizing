@@ -1,7 +1,106 @@
 <html>
 <title>Smart Resize</title>
-<head></head>
+<head>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="styles.css">
+    <script
+            src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.0/semantic.min.js"></script>
+</head>
 <body>
-This is a test!
+<div class="container">
+    <div class="ui large header" id="site-header">
+        Smart Resizing: Seam carving
+    </div>
+    <div class="preload-image-holder">
+        <div class="ui three column stackable grid">
+            <div class="column">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="" class="preload-image" id="preload-image1"/>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="" class="preload-image" id="preload-image2"/>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="" class="preload-image" id="preload-image3"/>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="" class="preload-image" id="preload-image4"/>
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui card">
+                    <div class="image">
+                        <img src="" class="preload-image" id="preload-image5"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="upload">
+        <div class="field">
+            <div class="ui action file input">
+                <label for="file">Upload</label>
+                <input type="file" id="file">
+                <label for="file" class="ui icon button"><i class="attach icon"></i></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui modal" id="modal">
+        <i class="close icon"></i>
+        <div class="image" id="modal-image-holder">
+            <div class="ui medium image" id="image-left-holder">
+                <img crossOrigin="anonymous" id="image-left"
+                     src="https://semantic-ui.com/images/avatar2/large/rachel.png">
+                <div class="content">
+                    Original (200 x 300)
+                </div>
+            </div>
+            <div class="ui medium image" id="image-right-holder">
+                <img id="image-right" src="https://semantic-ui.com/images/wireframe/image.png">
+                <div class="content">
+                    Resized (200 x 300)
+                </div>
+            </div>
+        </div>
+        <div class="actions">
+            <div id="input-wrapper">
+                <div class="ui input">
+                    <input name="width" placeholder="Width (px)" type="text">
+                </div>
+                <div class="ui input">
+                    <input name="height" placeholder="Height (px)" type="text">
+                </div>
+            </div>
+            <div class="ui black deny button">
+                Cancel
+            </div>
+            <div class="ui right green labeled icon button" id="resize-button">
+                Resize
+                <i class="checkmark icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="index.js"></script>
 </body>
 </html>

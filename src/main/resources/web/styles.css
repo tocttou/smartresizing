@@ -1,0 +1,99 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+#site-header {
+    align-self: center;
+    text-align: center;
+}
+
+#site-header {
+    margin-top: 1%;
+}
+
+.preload-image-holder {
+    align-self: center;
+    max-width: 50%;
+}
+
+.preload-image:hover {
+    cursor: pointer;
+}
+
+.upload {
+    align-self: center;
+    margin-top: 2%;
+}
+
+#modal-image-holder {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+#image-left-holder, #image-right-holder {
+    margin-top: 2%;
+    padding: 2%;
+}
+
+#image-left-holder {
+    margin-left: 2%;
+}
+
+#image-right-holder {
+    margin-right: 2%;
+}
+
+.content {
+    margin-top: 2%;
+    text-align: center;
+}
+
+#input-wrapper {
+    text-align: center;
+    padding: 4%;
+}
+
+@media (min-width: 768px) {
+    #modal {
+        max-width: 50%;
+    }
+}
+
+/*
+Polyfill for semantic-ui's file dialog
+ */
+
+.ui.action.file.input > input {
+    display: none;
+}
+
+.ui.action.file.input:not([class*="left action"]) > label {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-right-color: transparent !important;
+}
+
+.ui.action.file.input > label:first-child {
+    cursor: pointer;
+    width: auto;
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 auto;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
+    outline: 0;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    padding: .67861429em 1em;
+    background: #FFF;
+    border: 1px solid rgba(34, 36, 38, .15);
+    color: rgba(0, 0, 0, .87);
+    border-radius: .28571429rem;
+    -webkit-transition: box-shadow .1s ease, border-color .1s ease;
+    transition: box-shadow .1s ease, border-color .1s ease;
+    box-shadow: none;
+}
+
+.ui.action.file.input > label:last-child {
+    border-radius: 0 .28571429rem .28571429rem 0 !important;
+}
