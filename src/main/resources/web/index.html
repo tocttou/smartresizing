@@ -71,24 +71,27 @@
             <div class="ui medium image" id="image-left-holder">
                 <img crossOrigin="anonymous" id="image-left"
                      src="https://semantic-ui.com/images/avatar2/large/rachel.png">
-                <div class="content">
-                    Original (200 x 300)
+                <div class="content" id="image-left-resol">
+                    Original
                 </div>
             </div>
             <div class="ui medium image" id="image-right-holder">
                 <img id="image-right" src="https://semantic-ui.com/images/wireframe/image.png">
-                <div class="content">
-                    Resized (200 x 300)
+                <div class="content" id="image-right-resol">
+                    Resized
                 </div>
             </div>
+        </div>
+        <div id="progress-wrapper">
+            <div id="progress"></div>
         </div>
         <div class="actions">
             <div id="input-wrapper">
                 <div class="ui input">
-                    <input name="width" placeholder="Width (px)" type="text">
+                    <input name="width" id="width" placeholder="Width (px)" type="text">
                 </div>
                 <div class="ui input">
-                    <input name="height" placeholder="Height (px)" type="text">
+                    <input name="height" id="height" placeholder="Height (px)" type="text">
                 </div>
             </div>
             <div class="ui black deny button">

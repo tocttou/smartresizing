@@ -9,6 +9,6 @@ object Config {
         "https://i.imgur.com/xewKtB4.jpg",
         "https://i.imgur.com/FlT7iIc.jpg",
         "https://i.imgur.com/JQqvD3T.jpg",
-        "https://i.imgur.com/iuVmImh.jpg"
+        "https://i.imgur.com/vBF3fbr.jpg"
     )
 }
