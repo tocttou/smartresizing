@@ -15,6 +15,11 @@ $("#resize-button").on("click", function () {
             alert(message);
             throw new Error(message);
         }
+        if ((imgWidth > 600 || imgHeight > 600)) {
+            message = "image must be less than 600px by 600px";
+            alert(message);
+            throw new Error(message);
+        }
         if ((width > imgWidth * 1.3 || width < imgWidth * 0.7)
             || (height > imgHeight * 1.3 || height < imgHeight * 0.7)) {
             message = "width and height must be within 30% of the image dimensions";

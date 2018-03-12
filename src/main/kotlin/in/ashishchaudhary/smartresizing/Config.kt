@@ -6,7 +6,7 @@ object Config {
     const val host = "localhost"
     val preloadedImages = listOf(
         "https://i.imgur.com/RDasZL2.jpg",
-        "https://i.imgur.com/uGvKJRP.jpg",
+        "https://i.imgur.com/kS6jqe6.jpg",
         "https://i.imgur.com/FlT7iIc.jpg",
         "https://i.imgur.com/Z5PmHhJ.jpg",
         "https://i.imgur.com/zPDXzEv.jpg"
