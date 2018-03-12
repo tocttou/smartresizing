@@ -7,6 +7,7 @@ import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
 import io.ktor.application.install
 import io.ktor.content.*
+import io.ktor.features.CORS
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
@@ -38,6 +39,9 @@ val taskDispatcher = TaskDispatcher(
 
 fun Application.main() {
     install(DefaultHeaders)
+    install(CORS) {
+        host("*")
+    }
     install(CallLogging)
     install(ContentNegotiation) {
         gson {

@@ -8,7 +8,7 @@ import java.util.LinkedList
 import kotlin.math.sqrt
 
 class SeamCarver(filePath: Path, private val desiredWidth: Int, private val desiredHeight: Int) {
-    private val parentPath = filePath.parent
+    private val parentPath = filePath.parent.parent
     private val originalPicture = Picture(filePath.toString())
     private var defensiveCopy = Picture(originalPicture)
     private var saveFile = parentPath.toFile()

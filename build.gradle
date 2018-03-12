@@ -1,9 +1,9 @@
 buildscript {
-    ext.kotlin_version = '1.2.30-eap-47'
-    ext.ktor_version = '0.9.1'
+    ext.kotlin_version = "1.2.30-eap-47"
+    ext.ktor_version = "0.9.1"
 
     repositories {
-        maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+        maven { url "http://dl.bintray.com/kotlin/kotlin-eap" }
         mavenCentral()
     }
     dependencies {
@@ -11,10 +11,10 @@ buildscript {
     }
 }
 
-group 'in.ashishchaudhary.smartresizing'
-version '1.0-SNAPSHOT'
+group "in.ashishchaudhary.smartresizing"
+version "1.0"
 
-apply plugin: 'kotlin'
+apply plugin: "kotlin"
 
 kotlin {
     experimental {
@@ -23,7 +23,7 @@ kotlin {
 }
 
 repositories {
-    maven { url 'http://dl.bintray.com/kotlin/kotlin-eap' }
+    maven { url "http://dl.bintray.com/kotlin/kotlin-eap" }
     maven { url "https://dl.bintray.com/kotlin/kotlinx" }
     maven { url "https://dl.bintray.com/kotlin/ktor" }
     mavenCentral()
@@ -43,4 +43,15 @@ compileKotlin {
 }
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes "Implementation-Title": "SmartResizing",
+                "Implementation-Version": version,
+                "Main-Class": "io.ktor.server.netty.DevelopmentEngine"
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }

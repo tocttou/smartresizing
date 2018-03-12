@@ -134,7 +134,7 @@ function uploadBlob(blob) {
     formData.append("width", $("#width").val());
     formData.append("height", $("#height").val());
     $.ajax({
-        url: "http://localhost:8000/upload",
+        url: "http://" + window.location.host + "/upload",
         data: formData,
         processData: false,
         contentType: false,
