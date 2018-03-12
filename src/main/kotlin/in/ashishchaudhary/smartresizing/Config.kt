@@ -5,10 +5,10 @@ object Config {
     const val RESULTS_QUEUE = "results"
     const val host = "localhost"
     val preloadedImages = listOf(
-        "https://i.imgur.com/Tm30gCQ.jpg?1",
-        "https://i.imgur.com/xewKtB4.jpg",
+        "https://i.imgur.com/RDasZL2.jpg",
+        "https://i.imgur.com/uGvKJRP.jpg",
         "https://i.imgur.com/FlT7iIc.jpg",
-        "https://i.imgur.com/JQqvD3T.jpg",
-        "https://i.imgur.com/vBF3fbr.jpg"
+        "https://i.imgur.com/Z5PmHhJ.jpg",
+        "https://i.imgur.com/zPDXzEv.jpg"
     )
 }

@@ -3,24 +3,28 @@ package `in`.ashishchaudhary.smartresizing.taskrunner
 import `in`.ashishchaudhary.smartresizing.Config.RESULTS_QUEUE
 import `in`.ashishchaudhary.smartresizing.Config.TASK_QUEUE
 import `in`.ashishchaudhary.smartresizing.Config.host
+import `in`.ashishchaudhary.smartresizing.task.SeamCarver
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.ConnectionFactory
 import com.rabbitmq.client.DefaultConsumer
 import com.rabbitmq.client.Envelope
+import java.io.File
+import java.nio.file.Path
 
 class TaskRunner(private val TASK_QUEUE: String, private val RESULTS_QUEUE: String, host: String) {
     private val factory = ConnectionFactory()
     private val connection = factory.newConnection()
     private val channel = connection.createChannel()
     private val consumer: Consumer
-    private val messagePattern =
-        Regex("(Session=\\w+)\\|(Filepath=/[a-zA-Z0-9_/]+)", RegexOption.MULTILINE)
+    private val messagePattern = Regex(
+        "(Session=\\w+)\\|(Width=\\d+)\\|(Height=\\d+)\\|(Filepath=/[a-zA-Z0-9_./]+)"
+    )
 
-    data class Message(val session: String, val filePath: String)
+    data class Message(val session: String, val width: Int, val height: Int, val filePath: Path)
 
     sealed class Result {
         data class Failure(val session: String, val reason: String) : Result()
-        data class Success(val session: String, val filePath: String) : Result()
+        data class Success(val session: String, val filePath: Path) : Result()
     }
 
     inner class Consumer : DefaultConsumer(channel) {
@@ -56,7 +60,12 @@ class TaskRunner(private val TASK_QUEUE: String, private val RESULTS_QUEUE: Stri
         val message = String(body)
         if (!messagePattern.matches(message)) return null
         val groupValues = messagePattern.find(message)!!.groupValues.map { it.split("=")[1] }
-        return Message(groupValues[1], groupValues[2])
+        return Message(
+            groupValues[1],
+            groupValues[2].toInt(),
+            groupValues[3].toInt(),
+            File(groupValues[4]).toPath()
+        )
     }
 
     fun serializeResult(result: Result): ByteArray {
@@ -68,8 +77,9 @@ class TaskRunner(private val TASK_QUEUE: String, private val RESULTS_QUEUE: Stri
 
     fun doTask(message: Message): Result {
         return try {
-            Thread.sleep(3000)
-            Result.Success(message.session, message.filePath)
+            val sc = SeamCarver(message.filePath, message.width, message.height)
+            val resizedFilePath = sc.executeActionSequence()
+            Result.Success(message.session, resizedFilePath)
         } catch (e: Exception) {
             Result.Failure(message.session, e.message ?: "")
         }

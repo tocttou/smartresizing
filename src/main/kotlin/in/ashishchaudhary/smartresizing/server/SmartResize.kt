@@ -1,6 +1,7 @@
 package `in`.ashishchaudhary.smartresizing.server
 
 import `in`.ashishchaudhary.smartresizing.Config
+import `in`.ashishchaudhary.smartresizing.taskdispatcher.TaskDispatcher
 import io.ktor.application.Application
 import io.ktor.application.ApplicationCallPipeline
 import io.ktor.application.call
@@ -30,6 +31,10 @@ import java.nio.file.Files
 import java.nio.file.StandardCopyOption
 import java.text.DateFormat
 import java.time.Duration
+
+val taskDispatcher = TaskDispatcher(
+    Config.TASK_QUEUE, Config.RESULTS_QUEUE, Config.host
+)
 
 fun Application.main() {
     install(DefaultHeaders)
@@ -63,6 +68,7 @@ fun Application.main() {
             }
 
             try {
+                taskDispatcher.addSocket(session.id, this)
                 incoming.consumeEach { frame ->
                     if (frame is Frame.Text) {
                         receivedMessage(session.id, frame.readText())
@@ -70,6 +76,8 @@ fun Application.main() {
                 }
             } catch (e: Exception) {
                 println(e.message)
+            } finally {
+                taskDispatcher.removeSocket(session.id)
             }
         }
 
@@ -83,12 +91,20 @@ fun Application.main() {
             mpr.id = (call.sessions.get("SESSION") as Models.Session).id
             while (true) {
                 val part = multipart.readPart() ?: break
-                if (part is PartData.FileItem) if (part.partName == "file") {
-                    mpr.fileName = part.originalFileName
-                    mpr.inStream = part.streamProvider()
+                when (part) {
+                    is PartData.FormItem -> {
+                        when (part.partName) {
+                            "width" -> mpr.width = part.value.toIntOrNull() ?: 0
+                            "height" -> mpr.height = part.value.toIntOrNull() ?: 0
+                        }
+                    }
+                    is PartData.FileItem -> if (part.partName == "file") {
+                        mpr.fileName = part.originalFileName
+                        mpr.inStream = part.streamProvider()
+                    }
                 }
             }
-            if (mpr.id == null || mpr.fileName == null || mpr.inStream == null) {
+            if (mpr.id == null || mpr.width == 0 || mpr.height == 0 || mpr.fileName == null || mpr.inStream == null) {
                 call.respond(HttpStatusCode.BadRequest, "Illegal form format")
                 return@post
             }
@@ -100,6 +116,14 @@ fun Application.main() {
                 if (!blobDir.exists()) blobDir.mkdir()
                 val filePath = File(blobDir, mpr.fileName).toPath()
                 Files.copy(mpr.inStream, filePath, StandardCopyOption.REPLACE_EXISTING)
+                taskDispatcher.enqueueTask(
+                    TaskDispatcher.Message(
+                        (call.sessions.get("SESSION") as Models.Session).id,
+                        mpr.width,
+                        mpr.height,
+                        filePath
+                    )
+                )
                 call.respondText { "Success" }
             } catch (e: Exception) {
                 println(e.message)
@@ -120,7 +144,7 @@ fun Application.main() {
 
         static("file") {
             staticRootFolder = File(System.getProperty("java.io.tmpdir"))
-            files(File(staticRootFolder, "seam"))
+            files(File("seam"))
         }
     }
 }

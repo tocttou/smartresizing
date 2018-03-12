@@ -55,6 +55,10 @@
     padding: 4%;
 }
 
+#modal {
+    min-height: 90%;
+}
+
 @media (min-width: 768px) {
     #modal {
         max-width: 50%;
