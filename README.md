@@ -8,7 +8,7 @@ Supports:
 2. Image size expansion
 3. Multiple task runners using rabbitmq
 
-##Deployment
+## Deployment
 
 Requires Java8+
 
@@ -31,6 +31,6 @@ Doing `5` X times launches X workers.
 6. Start `SmartResizing`
 7. Visit `localhost:8000`
 
-##Todo
+## Todo
 1. Add logging.
 2. Add clean up task to remove old images once in a while.
